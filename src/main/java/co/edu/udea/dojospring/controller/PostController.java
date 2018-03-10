@@ -17,31 +17,39 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 public class PostController{
+
     @Autowired
     PostRepository post;
+
 
     @GetMapping("/posts")
     public List<Post> getAllPost(){
         return post.findAll();
     }
+
     @PostMapping("/post")
-    public Post createPost(@Valid @RequestBody Post post){
+    public Post createPost(@Valid @RequestBody Post post) {
         return this.post.save(post);
     }
 
     @GetMapping("/post/{id}")
-    public Post getPostaById(@PathVariable(value = "id") Long postId){
+    public Post getPostById(@PathVariable(value = "id") Long postId) {
         return post.findById(postId)
-               .orElseThrow(() => new ResourceNotFoundException("Post","id",postId));
+                .orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
     }
 
     @PutMapping("/post/{id}")
-    public Post updatetePost(@PathVariable(value = "id") Long postId,
-                             @Valid @RequestBody Post postDetails){
-        Post postNote = post.findById(postId);
-        PostNote.setTitle(postDetails.getTitle());
+    public Post updatePost(@PathVariable(value = "id") Long postId,
+                           @Valid @RequestBody Post postDetails) {
+
+        Post postNote = post.findById(postId)
+                .orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+
+        postNote.setTitle(postDetails.getTitle());
         postNote.setContent(postDetails.getContent());
-        return post.save(postNote);
+
+        Post updatedPost = post.save(postNote);
+        return updatedPost;
     }
 
     @DeleteMapping("/post/{id}")
@@ -53,5 +61,4 @@ public class PostController{
 
         return ResponseEntity.ok().build();
     }
-
 }

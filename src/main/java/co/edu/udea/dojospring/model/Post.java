@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Entity
-@table(name = "post")
+@Table(name = "Post")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"createdAt","updateAt"},allowGetters =  true)
 public class Post {
